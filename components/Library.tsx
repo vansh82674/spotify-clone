@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+
 import { TbPlaylist } from "react-icons/tb";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -7,6 +7,7 @@ import userAuthModal from "@/hooks/useAuthModal";
 import userUploadModal from "@/hooks/useUploadModal";
 import { useUser } from "@/hooks/useUser";
 import { Song } from "@/types";
+import useOnPlay from "@/hooks/useOnPlay";
 
 import MediaItem from "./MediaItem";
 
@@ -18,6 +19,8 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
   const authModal = userAuthModal();
   const uploadModal = userUploadModal();
   const { user } = useUser();
+
+  const onPlay = useOnPlay(songs);
 
   const onClick = () => {
     if (!user) {
@@ -40,7 +43,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
         "
         >
           <TbPlaylist size={24} className="text-neutral-400" />
-          <p className="text-neutral-400 text-md font-medium">Your Library</p>
+          <p className="text-neutral-400 text-base font-medium">Your Library</p>
         </div>
         <AiOutlinePlus
           size={20}
@@ -50,7 +53,11 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
       </div>
       <div className="flex flex-col gap-y-2 mt-4 px-3">
         {songs.map((item) => (
-          <MediaItem key={item.id} onClick={() => {}} data={item} />
+          <MediaItem
+            key={item.id}
+            onClick={(id: string) => onPlay(id)}
+            data={item}
+          />
         ))}
       </div>
     </div>
